@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const qrHost = $("qrCanvas");
   const contentHint = $("contentGuard");
   const previewCard = document.querySelector(".preview-card");
+  const bgHint = $("bgHint");
 
   const contentModeRadios = document.querySelectorAll('input[name="contentMode"]');
   const contentSections = {
@@ -107,6 +108,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     inputs.generateBtn.setAttribute("aria-disabled", String(!enabled));
     if (contentHint) contentHint.classList.toggle("hidden", enabled);
+  }
+
+  function syncBgHint(show, restartAnimation = false) {
+    if (!bgHint) return;
+    bgHint.classList.toggle("hidden", !show);
+    if (!show) {
+      bgHint.classList.remove("highlight");
+      return;
+    }
+    if (!restartAnimation) return;
+    // restart the animation by removing and re-adding the class
+    bgHint.classList.remove("highlight");
+    void bgHint.offsetWidth;
+    bgHint.classList.add("highlight");
   }
 
   function setWifiPasswordVisible(isVisible) {
@@ -336,6 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (inputs.fgColor) inputs.fgColor.value = "#111827";
     if (inputs.bgColor) inputs.bgColor.value = "#ffffff";
     if (inputs.bgTransparent) inputs.bgTransparent.checked = false;
+    syncBgHint(false);
 
     if (inputs.logoInput) inputs.logoInput.value = "";
     if (inputs.wifiSsid) inputs.wifiSsid.value = "";
@@ -380,23 +396,9 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.bgTransparent.addEventListener("change", () => {
       const disabled = inputs.bgTransparent.checked;
       if (inputs.bgColor) inputs.bgColor.disabled = disabled;
+      syncBgHint(disabled, true);
     });
   }
-
-  const bgHint = document.getElementById('bgHint');
-
-if (inputs.bgTransparent) {
-  inputs.bgTransparent.addEventListener('change', () => {
-    const show = inputs.bgTransparent.checked;
-    bgHint.classList.toggle('hidden', !show);
-    if (show) {
-      // restart the animation by removing and re-adding the class
-      bgHint.classList.remove('highlight');
-      void bgHint.offsetWidth; // force reflow to restart CSS animation
-      bgHint.classList.add('highlight');
-    }
-  });
-}
 
   contentModeRadios.forEach((radio) => {
     radio.addEventListener("change", () => setContentMode(radio.value));
