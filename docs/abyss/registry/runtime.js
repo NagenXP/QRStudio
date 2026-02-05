@@ -438,7 +438,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderQR();
 
-    if (window.matchMedia("(max-width: 720px)").matches && previewCard) {
+    if (window.matchMedia("(max-width: 768px)").matches && previewCard) {
       previewCard.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   });
