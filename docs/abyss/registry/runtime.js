@@ -438,7 +438,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderQR();
 
-    if (window.matchMedia("(max-width: 768px)").matches && previewCard) {
+    if (
+      window
+        .matchMedia(
+          "(max-width: 767px), (min-width: 768px) and (max-width: 1024px) and (orientation: portrait)"
+        )
+        .matches &&
+      previewCard
+    ) {
       previewCard.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   });
